@@ -34,6 +34,9 @@ def is_vit(name: str) -> bool:
     return any(k in name for k in ("vit", "deit"))
 
 
+PATH_OVERRIDES: dict = {}   # images_dir/labels_dir hiện tại, khi checkpoint được train ở máy khác (Colab -> Kaggle)
+
+
 def load_run(run_dir, device: str = "cuda", dynamic_img_size: bool | None = None):
     """Đọc config.json + best.pt của một lần chạy. Trả về (cfg, model ở eval mode).
 
@@ -43,7 +46,7 @@ def load_run(run_dir, device: str = "cuda", dynamic_img_size: bool | None = None
     run_dir = Path(run_dir)
     d = json.loads((run_dir / "config.json").read_text(encoding="utf-8"))
     d.pop("env", None)
-    cfg = tr.Config(**d)
+    cfg = tr.Config(**{**d, **PATH_OVERRIDES})
     arch = mdl.resolve_name(cfg.backbone)
     kw = dict(pretrained=False, num_classes=ds.NUM_CLASSES)
     if dynamic_img_size if dynamic_img_size is not None else is_vit(arch):
