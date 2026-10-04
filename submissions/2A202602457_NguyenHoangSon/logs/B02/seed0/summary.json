@@ -1,0 +1,27 @@
+{
+  "exp_id": "B02",
+  "seed": 0,
+  "backbone": "convnext_tiny.fb_in1k",
+  "weight_tag": "fb_in1k",
+  "init": "finetune",
+  "desc": "convnext_tiny",
+  "params_M": 27.827,
+  "gmacs": 4.455,
+  "img_size": 224,
+  "epochs": 12,
+  "best_epoch": 11,
+  "val_macro_f1": 0.9523949821232495,
+  "val_top1": 0.9642959154527277,
+  "val_balanced_acc": 0.9481561861601128,
+  "val_ece": 0.011784536569828773,
+  "val_f1_chinee": 0.8904428904428905,
+  "val_f1_snake": 0.9130434782608696,
+  "train_s_per_epoch": 60.499820490678154,
+  "latency_b1_p50_ms": 5.936589499924594,
+  "split_n": {
+    "train": 10501,
+    "val": 3501,
+    "test": 3507
+  },
+  "debug": false
+}

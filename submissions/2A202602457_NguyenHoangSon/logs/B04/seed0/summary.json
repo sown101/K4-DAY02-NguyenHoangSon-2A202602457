@@ -1,0 +1,27 @@
+{
+  "exp_id": "B04",
+  "seed": 0,
+  "backbone": "efficientnet_b0.ra_in1k",
+  "weight_tag": "ra_in1k",
+  "init": "finetune",
+  "desc": "efficientnet_b0",
+  "params_M": 4.019,
+  "gmacs": 0.385,
+  "img_size": 224,
+  "epochs": 12,
+  "best_epoch": 12,
+  "val_macro_f1": 0.8501048962868462,
+  "val_top1": 0.8831762353613254,
+  "val_balanced_acc": 0.8609809787463325,
+  "val_ece": 0.027316277124537155,
+  "val_f1_chinee": 0.7132530120481927,
+  "val_f1_snake": 0.767816091954023,
+  "train_s_per_epoch": 47.387480318546295,
+  "latency_b1_p50_ms": 11.465084499832301,
+  "split_n": {
+    "train": 10501,
+    "val": 3501,
+    "test": 3507
+  },
+  "debug": false
+}

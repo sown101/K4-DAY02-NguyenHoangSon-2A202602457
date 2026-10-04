@@ -1,0 +1,27 @@
+{
+  "exp_id": "T07",
+  "seed": 0,
+  "backbone": "deit_small_patch16_224.fb_in1k",
+  "weight_tag": "fb_in1k",
+  "init": "finetune",
+  "desc": "aug_trivial",
+  "params_M": 21.669,
+  "gmacs": 4.241,
+  "img_size": 224,
+  "epochs": 12,
+  "best_epoch": 10,
+  "val_macro_f1": 0.9603197067342766,
+  "val_top1": 0.9700085689802913,
+  "val_balanced_acc": 0.9514729945004761,
+  "val_ece": 0.011602644493144378,
+  "val_f1_chinee": 0.9174311926605504,
+  "val_f1_snake": 0.9141414141414141,
+  "train_s_per_epoch": 35.71019450823466,
+  "latency_b1_p50_ms": 5.558594000149242,
+  "split_n": {
+    "train": 10501,
+    "val": 3501,
+    "test": 3507
+  },
+  "debug": false
+}

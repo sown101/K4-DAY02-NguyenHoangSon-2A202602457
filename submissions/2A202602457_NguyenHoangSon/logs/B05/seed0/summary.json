@@ -1,0 +1,27 @@
+{
+  "exp_id": "B05",
+  "seed": 0,
+  "backbone": "mobilenetv3_large_100.ra_in1k",
+  "weight_tag": "ra_in1k",
+  "init": "finetune",
+  "desc": "mobilenetv3",
+  "params_M": 4.214,
+  "gmacs": 0.215,
+  "img_size": 224,
+  "epochs": 12,
+  "best_epoch": 10,
+  "val_macro_f1": 0.8327699345908741,
+  "val_top1": 0.8743216223936018,
+  "val_balanced_acc": 0.8228673258185428,
+  "val_ece": 0.022244179693979876,
+  "val_f1_chinee": 0.8009478672985783,
+  "val_f1_snake": 0.7740384615384616,
+  "train_s_per_epoch": 45.90331824620565,
+  "latency_b1_p50_ms": 7.010326999989047,
+  "split_n": {
+    "train": 10501,
+    "val": 3501,
+    "test": 3507
+  },
+  "debug": false
+}

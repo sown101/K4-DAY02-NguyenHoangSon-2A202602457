@@ -1,0 +1,4 @@
+exp_id,seed,method,space,K,T
+F01,0,crop5,prob,5,0.579955706000372
+F01,1,crop5,prob,5,0.5849648560204436
+F01,2,crop5,prob,5,0.5907834273339825

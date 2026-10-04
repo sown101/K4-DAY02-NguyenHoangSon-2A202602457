@@ -1,0 +1,75 @@
+{
+  "n": {
+    "train": 10501,
+    "val": 3501,
+    "test": 3507
+  },
+  "ratio": {
+    "train": 0.5997,
+    "val": 0.2,
+    "test": 0.2003
+  },
+  "union": 17509,
+  "overlap": {
+    "train∩val": 0,
+    "train∩test": 0,
+    "val∩test": 0
+  },
+  "missing_files": 0,
+  "per_class": {
+    "Chinee Apple": {
+      "train": 675,
+      "val": 225,
+      "test": 226,
+      "total": 1126
+    },
+    "Lantana": {
+      "train": 637,
+      "val": 213,
+      "test": 213,
+      "total": 1063
+    },
+    "Parkinsonia": {
+      "train": 618,
+      "val": 206,
+      "test": 207,
+      "total": 1031
+    },
+    "Parthenium": {
+      "train": 613,
+      "val": 204,
+      "test": 205,
+      "total": 1022
+    },
+    "Prickly Acacia": {
+      "train": 637,
+      "val": 212,
+      "test": 213,
+      "total": 1062
+    },
+    "Rubber Vine": {
+      "train": 605,
+      "val": 202,
+      "test": 202,
+      "total": 1009
+    },
+    "Siam Weed": {
+      "train": 644,
+      "val": 215,
+      "test": 215,
+      "total": 1074
+    },
+    "Snake Weed": {
+      "train": 609,
+      "val": 203,
+      "test": 204,
+      "total": 1016
+    },
+    "Negatives": {
+      "train": 5463,
+      "val": 1821,
+      "test": 1822,
+      "total": 9106
+    }
+  }
+}

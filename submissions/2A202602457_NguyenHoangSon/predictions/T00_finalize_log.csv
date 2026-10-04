@@ -1,0 +1,4 @@
+exp_id,seed,method,space,K,T
+T00,0,1view,logit,1,1.0
+T00,1,1view,logit,1,1.0
+T00,2,1view,logit,1,1.0
