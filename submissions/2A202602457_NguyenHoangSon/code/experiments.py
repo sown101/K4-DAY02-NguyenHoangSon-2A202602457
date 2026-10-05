@@ -316,14 +316,20 @@ def finalize(exp_id: str, run_root, seeds, method: str = "1view", space: str = "
     """Ghi predictions/<exp_id>_seed<k>_{val,test}.csv bằng phương pháp suy luận đã chốt trên VAL.
 
     temperature=True: khớp T trên val (cho từng seed), ghi bản đã hiệu chuẩn vào <exp_id>_*, bản chưa
-    hiệu chuẩn vào <exp_id>uncal_* (để eval.py grade chấm I4a). TEST chạy một lần mỗi seed.
+    hiệu chuẩn vào <exp_id>uncal_* (để eval.py grade chấm I4a). TEST chạy một lần mỗi seed: seed nào đã có
+    file test thì BỎ QUA (không tính lại, không ghi đè), nên chạy lại notebook vẫn an toàn.
     """
     pred_dir = Path(pred_dir)
+    log_path = pred_dir / f"{exp_id}_finalize_log.csv"
+    old = pd.read_csv(log_path) if log_path.exists() else pd.DataFrame()
     rows = []
     for s in seeds:
         test_path = pred_dir / f"{exp_id}_seed{s}_test.csv"
         if test_path.exists() and not force:
-            raise FileExistsError(f"{test_path} đã có: test chỉ được chạy một lần mỗi seed (README S2)")
+            print(f"bỏ qua {exp_id} seed{s}: {test_path.name} đã có (test chỉ chạy một lần mỗi seed)")
+            if not old.empty and "seed" in old:
+                rows += old[old.seed == s].to_dict("records")
+            continue
         cfg, model = load_run(Path(run_root) / exp_id / f"seed{s}", device)
         out = {}
         for split in ("val", "test"):
@@ -338,7 +344,7 @@ def finalize(exp_id: str, run_root, seeds, method: str = "1view", space: str = "
         del model
         torch.cuda.empty_cache()
     df = pd.DataFrame(rows)
-    df.to_csv(pred_dir / f"{exp_id}_finalize_log.csv", index=False)
+    df.to_csv(log_path, index=False)
     return df
 
 
@@ -427,6 +433,15 @@ def build_xlsx(path, run_root, step3_dir, eval_out, pred_dir, final_tag: str, ba
 
     inference = pd.read_csv(step3_dir / "Inference.csv")
     latency = pd.read_csv(step3_dir / "Latency.csv")
+    rt_path = eval_out / f"{final_tag}_latency_b1.json"
+    if rt_path.exists():  # độ trễ batch 1 của chính cấu hình chung kết (I5)
+        r = json.loads(rt_path.read_text(encoding="utf-8"))
+        latency = pd.concat([latency, pd.DataFrame([{
+            "cấu hình": f"{final_tag} chung kết ({r.get('method', 'K=' + str(r['k_views']))})", "gpu": r["gpu"],
+            "dtype": r["dtype"], "batch": r["batch"], "img_size": r["img_size"], "K": r["k_views"],
+            "gộp BN": "có" if r.get("fused_bn") else "không", "p50_ms": r["p50"], "p95_ms": r["p95"],
+            "p99_ms": r["p99"], "images_per_s": r["images_per_s"], "torch": r["torch"],
+            "tiền xử lý": r.get("preprocessing", "không tính")}])], ignore_index=True)
 
     final_rows = []
     for tag, desc in ((final_tag, final_desc), (base_tag, "Mốc: công thức nền T00 + suy luận 1 view I00")):

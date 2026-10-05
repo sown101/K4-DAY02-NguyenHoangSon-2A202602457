@@ -9,7 +9,7 @@ kết quả `eval.py` trong `eval_out/`. Mỗi `exp_id` truy ngược được t
 ## 1. Tóm tắt
 
 - **Bài toán:** phân loại 9 lớp DeepWeeds (17.509 ảnh, `Negative` ≈ 52%), fold 0 chia sẵn, chỉ số chính macro-F1.
-- **Đã làm:** 6 backbone (B01–B06), 13 cấu hình công thức huấn luyện trên DeiT-S (T00–T12, 6 trục + 2 tổ hợp),
+- **Đã làm:** 6 backbone (B01–B06), 13 cấu hình công thức huấn luyện trên DeiT-S (T00–T12: 5 trục A, B, C, D, F + 2 tổ hợp),
   16 cấu hình suy luận (I00–I08) có đo độ trễ p50/p95/p99, chung kết 3 seed và mốc 3 seed.
 - **Cấu hình tốt nhất (chọn hoàn toàn trên val):** DeiT-S + TrivialAugment + CutMix + label smoothing 0.1,
   suy luận TTA 5 crop gộp xác suất + temperature scaling.
@@ -124,7 +124,8 @@ lên (T11, T12). Δ so với T00 = 0.9588; **std seed ≈ 0.0045**.
 | **T11** | tổ hợp | Trivial + CutMix + LS 0.1 | **0.9626** | +0.004 | +0.8 | 0.101 |
 | T12 | tổ hợp | Trivial + CutMix + EMA | 0.9583 | −0.001 | −0.1 | 0.022 |
 
-Đường cong: `curves/T*_*.png`. 6 trục (A, B, C, D, F + tổ hợp); trục loss và augmentation đều có ≥ 3 giá trị.
+Đường cong: `curves/T*_*.png`. 5 trục (A khởi tạo, B augmentation, C loss, D cân bằng mẫu, F chính quy hoá) và 2
+tổ hợp; trục loss và augmentation đều có ≥ 3 giá trị khác nền.
 
 Phân tích:
 
@@ -136,8 +137,10 @@ Phân tích:
   các thay đổi nhỏ; T09 −1.7σ; T04 −0.8σ). Chúng cũng **không** cải thiện F1 lớp hiếm: F1 Chinee apple T05 = 0.888,
   T09 = 0.914, focal 0.904 so với T00 0.923. Giải thích: với backbone tiền huấn luyện mạnh, các lớp loài cỏ (~600
   ảnh/lớp) đã đủ dữ liệu; tăng trọng số lớp hiếm làm mô hình đoán chúng nhiều hơn, tăng nhầm `Negative` → loài
-  (giảm precision lớp hiếm) nhiều hơn phần recall lấy lại được. Sampler cân bằng còn làm mỗi epoch thấy lặp lại
-  ảnh lớp hiếm ~9 lần và thấy ít ảnh `Negative` khác nhau hơn (đường cong T09 dao động mạnh ở epoch 2–8).
+  (giảm precision lớp hiếm) nhiều hơn phần recall lấy lại được. Sampler cân bằng (10.501 lượt bốc/epoch, ~1.167 lượt mỗi lớp) làm mỗi ảnh
+  lớp hiếm được lấy trung bình ~1,7–1,9 lần/epoch, còn mỗi ảnh `Negative` chỉ ~0,21 lần/epoch: mô hình thấy ít
+  ảnh `Negative` khác nhau hơn hẳn — lớp đa dạng nhất lại bị lấy mẫu thưa nhất (đường cong T09 dao động mạnh ở
+  epoch 2–8).
 - **Label smoothing không đổi F1 nhưng làm hỏng hiệu chuẩn:** ECE 0.0095 → 0.087 (mô hình *kém tự tin*: nhãn mềm
   kéo xác suất max xuống ~0.9). Temperature scaling sửa được hoàn toàn (mục 5).
 - **Augmentation:** TrivialAugment và CutMix mỗi cái +0.001–0.002 (< 0.5σ, không phân biệt được); ColorJitter −0.008
@@ -249,7 +252,8 @@ I3 4/4, I4a 1/1, I4b 1/1, I5 2/2 → **17/20**.
 - Parthenium → Prickly acacia (11), Prickly acacia → Parkinsonia (9), Parthenium → Parkinsonia (8): các loài có lá
   xẻ/lá kép nhỏ, ở 224 px hình dạng lá rất giống nhau.
 
-Hai cấu hình đề xuất: **tốt nhất ngoại tuyến** = F01 (5 crop + TS, p95 26.8 ms batch 1, đo trên mô hình chung kết);
+Hai cấu hình đề xuất: **tốt nhất ngoại tuyến** = F01 (5 crop + TS; p50 / p95 / p99 = 26.1 / 26.8 / 27.8 ms batch 1, 200 lần đo trên
+mô hình chung kết seed 0 — dòng cuối sheet `Latency`, `eval_out/F01_latency_b1.json`);
 **rẻ nhất cho thời gian thực** = cùng mô hình, 1 view ở 256 px + TS (~7 ms; F1 val 0.9658 một seed, chưa chạy test
 nên không báo số test).
 

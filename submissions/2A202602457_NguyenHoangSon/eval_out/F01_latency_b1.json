@@ -1,0 +1,19 @@
+{
+ "gpu": "Tesla T4",
+ "dtype": "fp32",
+ "batch": 1,
+ "img_size": 224,
+ "fused_bn": false,
+ "k_views": 5,
+ "p50": 26.0741185002189,
+ "p95": 26.845927400290748,
+ "p99": 27.836990850119037,
+ "mean": 26.107652710024922,
+ "n": 200,
+ "images_per_s": 38.35220738110877,
+ "torch": "2.11.0+cu128",
+ "preprocessing": "không tính",
+ "method": "crop5",
+ "model": "runs/F01/seed0/best.pt",
+ "source": "Kaggle notebook sowncs/notebook60bb9e3d04 Version 3 (scriptVersionId 355107674), log dòng 246-261: benchmark.latency_report(warmup=10, iters=200, torch.cuda.synchronize); chép nguyên giá trị in ra"
+}
